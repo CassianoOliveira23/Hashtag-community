@@ -17,6 +17,7 @@
 
 <body>
    {% include 'navbar.html' %}
+   
     <div class="container">
         {% with mensagens = get_flashed_messages(with_categories=True) %}
             {% if mensagens %}
