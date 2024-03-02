@@ -2,8 +2,8 @@
 from hashtagcommunity.models import Usuario, Posts, database
 from main import app
 
-with app.app_context():
-    database.create_all()
+'''with app.app_context():
+    database.create_all()'''
 
 '''with app.app_context():
     usuario = Usuario(username="João e Santo Cristo", email="joaosc@gmail.com", senha="123456")
@@ -31,5 +31,6 @@ with app.app_context():
     print(post.autor.email)'''
     
     
-'''with app.app_context():
-    database.create_all()'''
+with app.app_context():
+    database.drop_all()
+    database.create_all()
