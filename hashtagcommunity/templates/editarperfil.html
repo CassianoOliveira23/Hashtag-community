@@ -50,6 +50,18 @@
                                 {% endfor %}
                             {% endif %}
                         </div>
+                        <br>
+                        <hr>
+                        <p>Cursos</p>
+                        {% for campo in form %}
+                            {% if 'curso_' in campo.name %}
+                                <div class="form-group">
+                                    {{ campo(class="form-check-input") }}
+                                    {{ campo.label(class="form-check-label") }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                       
 
                     </fieldset>
                 
