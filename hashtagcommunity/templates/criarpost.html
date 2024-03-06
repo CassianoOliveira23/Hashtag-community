@@ -2,7 +2,48 @@
 
 {% block body %}
     <div class="container">
-        <h1>Criar Post</h1>
+        <div class="row">
+            <div class="col">
+                <legend>Criar Post</legend>
+                <form method="POST" action="" class="border p-5 mt-5">
+                    {{ form.csrf_token }}
+                    
+                    <fieldset>
+                        <div class="form-group">
+                            {{ form.titulo.label(class="form-control-label") }}
+
+                            {% if form.titulo.errors %}
+                                {{ form.titulo(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.titulo.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.titulo(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.corpo.label(class="form-control-label") }}
+
+                            {% if form.corpo.errors %}
+                                {{ form.corpo(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.corpo.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.corpo(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                
+                    {{ form.botao_submit(class="btn btn-success mt-3") }}
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
 

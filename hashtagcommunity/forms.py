@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from hashtagcommunity.models import Usuario
 from flask_login import current_user
@@ -48,3 +48,8 @@ class FormEditarPerfil(FlaskForm):
             if usuario:
                 raise ValidationError('Email já cadastrado. Cadastra-se com outro e-mail.')
             
+            
+class FormCriarPost(FlaskForm):
+    titulo = StringField('Titulo do Post', validators=[DataRequired(), Length(2, 140)])
+    corpo = TextAreaField('Escreva seu Post aqui', validators=[DataRequired()])
+    botao_submit = SubmitField('Postar')

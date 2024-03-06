@@ -1,14 +1,12 @@
 from flask import render_template, redirect, url_for, flash, request
 from hashtagcommunity import app, database, bcrypt
-from hashtagcommunity.forms import FormCriarConta, FormLogin, FormEditarPerfil
-from hashtagcommunity.models import Usuario
+from hashtagcommunity.forms import FormCriarConta, FormLogin, FormEditarPerfil, FormCriarPost
+from hashtagcommunity.models import Usuario, Posts
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
 from PIL import Image
 
-
-lista_usuarios = ['Cassiano Oliveira', 'Ket Wolski Goetz', 'Alina Kovalenko', 'Angelina Mikhailichenko']
 
 @app.route("/")
 def home():
@@ -23,6 +21,7 @@ def contato():
 @app.route('/usuarios')
 @login_required
 def usuarios():
+    lista_usuarios = Usuario.query.all()
     return render_template('usuarios.html', lista_usuarios=lista_usuarios)
 
 
@@ -76,10 +75,17 @@ def perfil():
     return render_template('perfil.html', foto_perfil=foto_perfil)
 
 
-@app.route('/post/criar')
+@app.route('/post/criar' , methods=['GET', 'POST'])
 @login_required
 def criar_post():
-    return render_template('criarpost.html')
+    form = FormCriarPost()
+    if form.validate_on_submit():
+        post = Posts(titulo=form.titulo.data, corpo=form.corpo.data, autor=current_user)
+        database.session.add(post)
+        database.session.commit()
+        flash('Post criado com sucesso', 'alert-success')
+        return redirect(url_for('home'))
+    return render_template('criarpost.html', form=form)
 
 
 def salvar_imagem(imagem):
