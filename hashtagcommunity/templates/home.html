@@ -1,8 +1,32 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Meu segundo site em Flask</h1>
+    <div class="container mt-5">
+        <h2 style="text-align: center">Alunos, Profesores e Experts. </h2>
+        <h2 style="text-align: center">A galera da Hashtag em um só lugar.</h2>
+        <br>
+        <hr>
+        {% for post in posts %}
+            <div class="row border mt-4 p-3 meupost"> 
+                <!--IMG-->
+                <div class="col col-3">
+                    <div class="image pe-2">
+                        <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(post.autor.foto_perfil)) }}" class="rounded-circle" width="180">
+                        <br>
+                        <br>
+                        <strong text="center">{{ post.autor.username }}</strong>
+                    </div>
+                </div>
+
+                <br>
+
+                <!--Text-->
+                <div class="col  col-9">
+                    <a style="text-decoration:none" href="{{ url_for('exibir_post', post_id=post.id) }}"><h3>{{ post.titulo }}</h3></a>
+                    <p>{{ post.corpo }}</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
     

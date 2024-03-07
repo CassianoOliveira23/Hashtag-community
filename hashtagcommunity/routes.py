@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from hashtagcommunity import app, database, bcrypt
 from hashtagcommunity.forms import FormCriarConta, FormLogin, FormEditarPerfil, FormCriarPost
 from hashtagcommunity.models import Usuario, Posts
@@ -10,7 +10,8 @@ from PIL import Image
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+    posts = Posts.query.order_by(Posts.id.desc())
+    return render_template('home.html', posts=posts)
 
 
 @app.route('/contato')
@@ -133,3 +134,37 @@ def editar_perfil():
     return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form)
 
 
+
+@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def exibir_post(post_id):
+    post = Posts.query.get(post_id)
+    if current_user == post.autor:
+        form = FormCriarPost()
+        if request.method =='GET':
+            form.titulo.data = post.titulo
+            form.corpo.data = post.corpo
+        elif form.validate_on_submit():
+            post.titulo = form.titulo.data
+            post.corpo = form.corpo.data
+            database.session.commit()
+            flash('Post Atualizado com Sucesso', 'alert-success')
+            return redirect(url_for('home'))
+    else:
+        form=None
+    return render_template('post.html', post=post, form=form)
+
+
+
+@app.route('/post/<int:post_id>/excluir', methods=['GET', 'POST'])
+@login_required
+def excluir_post(post_id):
+    post = Posts.query.get(post_id)
+    
+    if current_user == post.autor:
+        database.session.delete(post)
+        database.session.commit()
+        flash('Post excluido com Sucesso', 'alert-success')
+        return redirect(url_for('home'))
+    else:
+        abort(403)

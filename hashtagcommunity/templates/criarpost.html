@@ -4,14 +4,14 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <legend>Criar Post</legend>
+                <legend class="mt-5">Criar Post</legend>
                 <form method="POST" action="" class="border p-5 mt-5">
                     {{ form.csrf_token }}
                     
                     <fieldset>
                         <div class="form-group">
                             {{ form.titulo.label(class="form-control-label") }}
-
+                            
                             {% if form.titulo.errors %}
                                 {{ form.titulo(class="form-control is-invalid") }}
                                 <div class="invalid-feedback">
@@ -24,9 +24,10 @@
                             {% endif %}
                         </div>
                         <br>
+                        <br>
                         <div class="form-group">
                             {{ form.corpo.label(class="form-control-label") }}
-
+                            
                             {% if form.corpo.errors %}
                                 {{ form.corpo(class="form-control is-invalid") }}
                                 <div class="invalid-feedback">
